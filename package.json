@@ -1,0 +1,26 @@
+{
+  "name": "git-branch-description",
+  "version": "1.0.0",
+  "description": "通过branch-description.json文件来管理项目中每个分支的描述",
+  "main": "index.js",
+  "bin": {
+    "ngbd": "bin/ngbd.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wstation@163.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leemotive/git-branch-description.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leemotive/git-branch-description/issues"
+  },
+  "homepage": "https://github.com/leemotive/git-branch-description#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "commander": "^2.15.1"
+  }
+}
