@@ -12,8 +12,9 @@ module.exports = function() {
         descConfig = require(path.resolve(pwd, 'branch-description.json'));
     }
 
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/ | sed 's|refs/heads/||'`).toString().split(os.EOL);
+    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().split(os.EOL);
     for(let branch of branches) {
+        branch = branch.replace('refs/heads/', '');
         if (descConfig[branch] || !branch) {
             continue;
         }
