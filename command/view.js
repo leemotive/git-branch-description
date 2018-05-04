@@ -1,10 +1,11 @@
 var path = require('path');
 var os = require('os');
 var exec = require('child_process').execSync;
+var properties = require('properties');
 
 module.exports = function() {
 
-    var descConfig = require(path.resolve(process.env.PWD, 'branch-description.json'));
+    var descConfig = properties.parse(path.resolve(process.env.PWD, 'branch-description.properties'));
     var branch = exec('git branch').toString();
     
     var branchArr = branch.split(os.EOL);

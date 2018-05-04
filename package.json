@@ -21,6 +21,7 @@
   "homepage": "https://github.com/leemotive/git-branch-description#readme",
   "dependencies": {},
   "devDependencies": {
-    "commander": "^2.15.1"
+    "commander": "^2.15.1",
+    "properties": "^1.2.1"
   }
 }
