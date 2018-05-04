@@ -8,8 +8,7 @@ var configFilePath = path.resolve(pwd, 'branch-description.properties')
 
 module.exports = function () {
     var contents = fs.readFileSync(configFilePath, 'utf8');
-
-    contents = contents.replace(/<{5,} \w+/, '').replace(/>{5,} \w+/, '').replace(/\b={5,}\b/, '');
+    contents = contents.replace(/(^|\n)<{7} \w+\n/g, '\n').replace(/\n>{7} \w+(\n|$)/g, '\n').replace(/\n={7}\n/g, '\n');
     var descConfig = properties.parse(contents);
     fs.writeFileSync(configFilePath, properties.stringify(descConfig), {encoding: 'utf8'});
 }
