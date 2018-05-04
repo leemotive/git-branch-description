@@ -7,7 +7,8 @@
     "ngbd": "bin/ngbd.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "command/postinstall.js"
   },
   "author": "wstation@163.com",
   "license": "ISC",
