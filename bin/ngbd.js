@@ -19,27 +19,27 @@ program.version(pkg.version);
 
 
 check.gitDir();
-program.command('init')
+program.command('init', 'initialize a git repository with a branch-description.properties')
     .action(function(cmd) {
         init();
     });
 
-program.command('view')
+program.command('view', 'view all branch description')
     .action(function() {
         view();
     });
 
-program.command('prune')
+program.command('prune', 'remove branch description in properties file but the branch has been deleted')
     .action(function() {
         prune();
     });
 
-program.command('conflict')
+program.command('conflict', 'resole conficts in properites file after branch merge')
     .action(function() {
         conflict();
     });
 
-program.command('add')
+program.command('add', 'add branch description')
     .action(function() {
         var currentBranch = exec('git rev-parse --abbrev-ref HEAD').toString().trim();
         var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().replace(/refs\/heads\//g, '').split(os.EOL);
