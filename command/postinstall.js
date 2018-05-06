@@ -1,2 +1,3 @@
-require('../util/check').gitDir();
-require('./init')();
+if (require('../util/check').gitDir(true)) {
+    require('./init')();
+}
