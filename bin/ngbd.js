@@ -13,10 +13,12 @@ var prune = require('../command/prune');
 var conflict = require('../command/conflict');
 var add = require('../command/add');
 
+var check = require('../util/check');
 
 program.version(pkg.version);
 
 
+check.gitDir();
 program.command('init')
     .action(function(cmd) {
         init();
