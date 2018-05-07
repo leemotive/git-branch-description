@@ -5,7 +5,7 @@ var properties = require('properties');
 
 module.exports = function() {
 
-    var descConfig = properties.parse(path.resolve(process.env.PWD, 'branch-description.properties'));
+    var descConfig = properties.parse(fs.readFileSync(path.resolve(process.cwd(), 'branch-description.properties'), 'utf8'));
     var branch = exec('git branch').toString();
     
     var branchArr = branch.split(os.EOL);
