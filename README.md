@@ -12,7 +12,7 @@ $ npm install git-branch-description --save-dev
 ```
 
 ## Usage
-  Usage: ngbd [options] [command]
+  Usage: gbrd [options] [command]
 
   Options:
 
