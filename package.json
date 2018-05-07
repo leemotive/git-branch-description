@@ -1,10 +1,10 @@
 {
   "name": "git-branch-description",
   "version": "1.0.1",
-  "description": "通过branch-description.json文件来管理项目中每个分支的描述",
+  "description": "通过branch-description.properties文件来管理项目中每个分支的描述",
   "main": "index.js",
   "bin": {
-    "ngbd": "bin/ngbd.js"
+    "gbrd": "bin/gbrd.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
