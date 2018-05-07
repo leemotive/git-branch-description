@@ -4,8 +4,8 @@ var exec = require('child_process').execSync;
 var os = require('os');
 var properties = require('properties');
 
-module.exports = function() {
-    var pwd = process.cwd();
+module.exports = function(installDir) {
+    var pwd = installDir || process.cwd();
     var configExists = fs.existsSync(path.resolve(pwd, 'branch-description.properties'));
 
     var descConfig = {};

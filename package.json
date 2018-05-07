@@ -1,6 +1,6 @@
 {
   "name": "git-branch-description",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "通过branch-description.properties文件来管理项目中每个分支的描述",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node command/postinstall.js"
+    "postinstall": "node ./command/postinstall.js"
   },
   "author": "wstation@163.com",
   "license": "ISC",
