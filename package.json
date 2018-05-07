@@ -1,6 +1,6 @@
 {
   "name": "git-branch-description",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "通过branch-description.properties文件来管理项目中每个分支的描述",
   "main": "index.js",
   "bin": {
@@ -20,10 +20,10 @@
     "url": "https://github.com/leemotive/git-branch-description/issues"
   },
   "homepage": "https://github.com/leemotive/git-branch-description#readme",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "commander": "^2.15.1",
     "inquirer": "^5.2.0",
     "properties": "^1.2.1"
-  }
+  },
+  "devDependencies": {}
 }
