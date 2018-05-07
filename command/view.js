@@ -1,5 +1,6 @@
 var path = require('path');
 var os = require('os');
+var fs = require('fs');
 var exec = require('child_process').execSync;
 var properties = require('properties');
 
