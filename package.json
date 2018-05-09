@@ -1,7 +1,7 @@
 {
   "name": "git-branch-description",
   "version": "1.0.5",
-  "description": "通过branch-description.properties文件来管理项目中每个分支的描述",
+  "description": "manage branch description via branch-description.properties",
   "main": "index.js",
   "bin": {
     "gbrd": "bin/gbrd.js"
