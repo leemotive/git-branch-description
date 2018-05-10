@@ -2,25 +2,26 @@ var fs = require('fs');
 var os = require('os');
 var exec = require('child_process').execSync;
 var path = require('path');
-var properties = require('properties');
 
-var pwd = process.cwd();
-var configFilePath = path.resolve(pwd, 'branch-description.properties')
+var parser = require('../util/parser');
+var git = require('../util/git');
+
+var pwd = parser.getRootDir();
 
 module.exports = function() {
-    if(!fs.existsSync(configFilePath)) {
+    if(!parser.configFileExists()) {
         console.log(`branch-description.properties is not exists in ${pwd}`);
         process.exit(1);
     }
 
-    var descConfig = properties.parse(fs.readFileSync(configFilePath, 'utf8'));
+    var descConfig = parser.read();
 
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/`).toString().replace(/refs\/heads\//g, '').replace(/refs\/remotes\/\w+\//g, '').split(os.EOL);
+    var branches = git.allBranches(true);
     for(let branch of Object.keys(descConfig)) {
         if(!branches.includes(branch)) {
             delete descConfig[branch];
         }
     }
 
-    fs.writeFileSync(configFilePath, properties.stringify(descConfig), {encoding: 'utf8'});
+    parser.write(descConfig);
 }

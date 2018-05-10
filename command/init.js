@@ -2,33 +2,25 @@ var fs = require('fs');
 var path = require('path');
 var exec = require('child_process').execSync;
 var os = require('os');
-var properties = require('properties');
 
-module.exports = function(installDir) {
-    var pwd = installDir || process.cwd();
-    var configExists = fs.existsSync(path.resolve(pwd, 'branch-description.properties'));
+var parser = require('../util/parser');
+var git = require('../util/git');
 
-    var descConfig = {};
-    if (configExists) {
-        var contents = fs.readFileSync(path.resolve(pwd, 'branch-description.properties'), 'utf8');
-        descConfig = properties.parse(contents);
-    }
+module.exports = function() {
+    var descConfig = parser.read();
 
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().split(os.EOL);
-    for(let branch of branches) {
-        branch = branch.replace('refs/heads/', '');
-        if (descConfig[branch] || !branch) {
+    var branches = git.localBranches();
+
+    let desc = '';
+    for(let name of branches) {
+        if (!name || descConfig[name]) {
             continue;
         }
-        var desc = '';
-        try {
-            desc = exec(`git config branch.${branch}.description`).toString().trim();
-        } catch (e) {
-        }
-        if (desc) {
-            descConfig[branch] = desc;
-        }
+        
+        desc = git.branchDescription(name);
+
+        desc && (descConfig[name] = desc);
     }
 
-    fs.writeFileSync(path.resolve(pwd, 'branch-description.properties'), properties.stringify(descConfig), {encoding: 'utf8'});
+    parser.write(descConfig);
 }
