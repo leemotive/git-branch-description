@@ -37,7 +37,7 @@ function outputDescription(descs) {
 
 
 
-module.exports = function(specifyBranch, mode) {
+module.exports = function(specifyBranch, mode, clean) {
 
     var descConfig = parser.read();
     
@@ -59,13 +59,14 @@ module.exports = function(specifyBranch, mode) {
         branches = git.allBranches(true);
     }
 
-    let out = branches.map(function(name) {
-        let br = {};
+    let out = [], br = {};
+    for(let name of branches) {
         br.name = name;
         br.desc = descConfig[name] || git.branchDescription(name);
-
-        return br;
-    });
+        if (br.desc || !clean) {
+            out.push(br);
+        }
+    }
 
     outputDescription(out);
 }

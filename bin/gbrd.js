@@ -29,9 +29,11 @@ program.command('view [branch]')
     .description('view branch description')
     .option('-r --remote', 'list remote remote-tracking branches description')
     .option('-a --all', 'list both remote-tracking and local branches description')
+    .option('-c --clean', 'hide branches without description')
     .action(function(branch, cmd) {
         let mode = cmd.all ? 'all' : cmd.remote ? 'remote' : 'local';
-        view(branch, mode);
+        let clean = cmd.clean;
+        view(branch, mode, clean);
     });
 
 program.command('prune')
