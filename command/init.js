@@ -1,8 +1,3 @@
-var fs = require('fs');
-var path = require('path');
-var exec = require('child_process').execSync;
-var os = require('os');
-
 var parser = require('../util/parser');
 var git = require('../util/git');
 

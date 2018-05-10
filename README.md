@@ -16,15 +16,15 @@ $ npm install git-branch-description --save-dev
 
   Options:
 
-    -V, --version  output the version number
-    -h, --help     output usage information
+    -V, --version            output the version number
+    -h, --help               output usage information
 
   Commands:
 
-    init           initialize a git repository with a branch-description.properties
-    view           view all branch description
-    prune          remove branch description in properties file but the branch has been deleted
-    conflict       resole conficts in properites file after branch merge
-    add            add branch description
+    init                     initialize a git repository with a branch-description.properties
+    view [options] [branch]  view branch description
+    prune                    remove branch description in properties file but the branch has been deleted
+    conflict                 resole conficts in properites file after branch merge
+    add                      add branch description
 
 

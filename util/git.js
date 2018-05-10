@@ -1,3 +1,4 @@
+var os = require('os');
 var exec = require('child_process').execSync;
 
 exports.localBranches = function() {

@@ -1,5 +1,3 @@
-var fs = require('fs');
-var path = require('path');
 var parser = require('../util/parser');
 
 module.exports = function () {

@@ -33,7 +33,7 @@ exports.readContents = function() {
 exports.write = function(desc) {
 
     if (desc && Object.keys(desc).length) {
-        fs.writeFileSync(filePath, properites.stringify(desc), {encoding: 'utf8'});
+        fs.writeFileSync(filePath, properties.stringify(desc), {encoding: 'utf8'});
     }
 }
 exports.writeContents = function(contents) {

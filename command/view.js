@@ -1,9 +1,6 @@
-var path = require('path');
 var os = require('os');
-var fs = require('fs');
-var exec = require('child_process').execSync;
 
-var parser = require('parser');
+var parser = require('../util/parser');
 var git = require('../util/git');
 
 var currentBranch = git.currentHead();
@@ -64,7 +61,8 @@ module.exports = function(specifyBranch, mode) {
 
     let out = branches.map(function(name) {
         let br = {};
-        br[name] = descConfig[name] || git.branchDescription(name);
+        br.name = name;
+        br.desc = descConfig[name] || git.branchDescription(name);
 
         return br;
     });
