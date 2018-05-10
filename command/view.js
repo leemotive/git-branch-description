@@ -59,8 +59,9 @@ module.exports = function(specifyBranch, mode, clean) {
         branches = git.allBranches(true);
     }
 
-    let out = [], br = {};
+    let out = [], br;
     for(let name of branches) {
+        br = {};
         br.name = name;
         br.desc = descConfig[name] || git.branchDescription(name);
         if (br.desc || !clean) {
