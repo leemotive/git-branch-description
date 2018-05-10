@@ -4,51 +4,56 @@ var fs = require('fs');
 var exec = require('child_process').execSync;
 var properties = require('properties');
 
-module.exports = function() {
+module.exports = function(specifyBranch) {
 
     var descConfig = properties.parse(fs.readFileSync(path.resolve(process.cwd(), 'branch-description.properties'), 'utf8'));
     var branch = exec('git branch').toString();
     
-    var branchArr = branch.split(os.EOL);
-    var lastBr = branchArr.pop();
-    if (lastBr) {
-        branchArr.push(lastBr);
-    }
+    var branchArr = branch.trim().split(os.EOL);
     
-    branchArr = branchArr.map(function(br) {
+    var activeBranch = '';
+    branchArr.forEach(function(br) {
         let brObj = {};
-        var matches = br.match(/^(\*?\s*)(.+)/);
+        var matches = br.match(/^(\*?\s+)([^\(\)]+)/);
         if (!matches) {
-            return brObj;
+            return;
         }
-        brObj.name = matches[2];
-        brObj.active = !!matches[1].trim();
-        var desc = '';
-        try {
-            desc = exec(`git config branch.${brObj.name}.description`).toString().trim();
-        } catch (e) {
+        let bName = matches[2];
+        !!matches[1].trim() && (activeBranch = bName);
+        if (!descConfig[bName]) {
+            var desc = '';
+            try {
+                desc = exec(`git config branch.${brObj.name}.description`).toString().trim();
+            } catch (e) {
+            }
+            descConfig[bName] = desc || ''
         }
-        brObj.desc = descConfig[brObj.name] || desc || '';
-        
-        return brObj;
-    }).map(function(br) {
-        return br.name ? `${br.active ? '*' : ' '} ${colorName(br)}${colorDesc(br)}` : '';
     });
+
+    let branches = specifyBranch ? [specifyBranch] : Object.keys(descConfig);
     
-    function colorName(br) {
-        if (br.active) {
-            return `\x1B[32m${br.name}\x1B[39m`;
+    let descs = branches.map(function(name) {
+        var isCurrent = name === activeBranch;
+        return `${renderPrefix(isCurrent)} ${colorName(name, isCurrent)}${colorDesc(descConfig[name])}`;
+    })
+    
+    function renderPrefix(isCurrent) {
+        return isCurrent ? '*' : ' ';
+    }
+    function colorName(name, isCurrent) {
+        if (isCurrent) {
+            return `\x1B[32m${name}\x1B[39m`;
         } else {
-            return br.name;
+            return name;
         }
     }
-    function colorDesc(br) {
-        if (br.desc) {
-            return ` \x1B[36m${br.desc}\x1B[39m`;
+    function colorDesc(desc) {
+        if (desc) {
+            return ` \x1B[36m${desc}\x1B[39m`;
         } else {
             return '';
         }
     }
     
-    console.log(branchArr.join(os.EOL).toString());
+    console.log(descs.join(os.EOL).toString());
 }

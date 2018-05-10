@@ -25,10 +25,13 @@ program.command('init')
         init();
     });
 
-program.command('view')
-    .description('view all branch description')
-    .action(function() {
-        view();
+program.command('view [branch]')
+    .description('view branch description')
+    .option('-r --remote', 'list remote remote-tracking branches description')
+    .option('-a --all', 'list both remote-tracking and local branches description')
+    .action(function(branch, cmd) {
+        let mode = cmd.all ? 'all' : cmd.remote ? 'remote' : 'local';
+        view(branch, mode);
     });
 
 program.command('prune')
