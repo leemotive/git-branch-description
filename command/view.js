@@ -43,11 +43,11 @@ module.exports = function(specifyBranch, mode, clean) {
     
     if (specifyBranch) {
         var desc = descConfig[specifyBranch] || git.branchDescription(specifyBranch);
-        var br = {
+        var sbr = {
             name: specifyBranch,
             desc
         };
-        return outputDescription([br]);
+        return outputDescription([sbr]);
     }
 
     let branches = []
