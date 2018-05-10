@@ -1,6 +1,6 @@
 {
   "name": "git-branch-description",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "manage branch description via branch-description.properties",
   "main": "index.js",
   "bin": {
