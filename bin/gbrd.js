@@ -52,7 +52,7 @@ program.command('add')
     .description('add branch description')
     .action(function() {
         var currentBranch = exec('git rev-parse --abbrev-ref HEAD').toString().trim();
-        var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().replace(/refs\/heads\//g, '').split(os.EOL);
+        var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().replace(/refs\/heads\//g, '').trim().split(os.EOL);
         inquirer.prompt([{
             type: 'list',
             name: 'branch',
@@ -62,7 +62,13 @@ program.command('add')
         }, {
             type: 'input',
             name: 'description',
-            message: "Please input branch description: "
+            message: 'Please input branch description: ',
+            validate: function(desc) {
+                if (!desc.trim()) {
+                    return 'description can not be empty!!!';
+                }
+                return true;
+            }
         }]).then(function(answers) {
            add(answers);
         })
