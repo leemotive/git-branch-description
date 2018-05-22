@@ -1,8 +1,11 @@
 var os = require('os');
 var exec = require('child_process').execSync;
+var parser = require('./parser');
 
 exports.localBranches = function() {
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().trim();
+    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`, {
+        cwd: parser.getRootDir()
+    }).toString().trim();
     
     branches = branches.replace(/(^|\n)refs\/heads\//g, '$1').split(os.EOL);
 
@@ -34,7 +37,9 @@ exports.currentHead = function() {
 exports.branchDescription = function(name) {
     let desc = '';
     try {
-        desc = exec(`git config branch.${name}.description`).toString().trim();
+        desc = exec(`git config branch.${name}.description`, {
+            cwd: parser.getRootDir()
+        }).toString().trim();
     } catch (e) {
     }
     return desc;
