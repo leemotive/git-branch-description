@@ -12,7 +12,7 @@ var init = require('../command/init');
 var view = require('../command/view');
 var prune = require('../command/prune');
 var conflict = require('../command/conflict');
-var add = require('../command/add');
+var edit = require('../command/edit');
 
 var check = require('../util/check');
 var git = require('../util/git');
@@ -50,8 +50,8 @@ program.command('conflict')
         conflict();
     });
 
-program.command('add')
-    .description('add branch description')
+program.command('edit')
+    .description('edit branch description')
     .action(function() {
         var currentBranch = exec('git rev-parse --abbrev-ref HEAD').toString().trim();
         var branches = git.localBranches();
@@ -78,7 +78,7 @@ program.command('add')
                 return true;
             }
         }]).then(function(answers) {
-           add(answers);
+           edit(answers);
         })
     })
 

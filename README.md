@@ -25,6 +25,6 @@ $ npm install git-branch-description --save-dev
     view [options] [branch]  view branch description
     prune                    remove branch description in properties file but the branch has been deleted
     conflict                 resolve conflicts in properites file after branch merge
-    add                      add branch description
+    edit                     edit branch description
 
 
