@@ -6,6 +6,7 @@ var os = require('os');
 var exec = require('child_process').execSync;
 
 var inquirer = require('inquirer');
+inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
 
 var init = require('../command/init');
 var view = require('../command/view');
@@ -14,6 +15,7 @@ var conflict = require('../command/conflict');
 var add = require('../command/add');
 
 var check = require('../util/check');
+var git = require('../util/git');
 
 program.version(pkg.version);
 
@@ -43,7 +45,7 @@ program.command('prune')
     });
 
 program.command('conflict')
-    .description('resole conficts in properites file after branch merge')
+    .description('resolve conflicts in properites file after branch merge')
     .action(function() {
         conflict();
     });
@@ -52,13 +54,19 @@ program.command('add')
     .description('add branch description')
     .action(function() {
         var currentBranch = exec('git rev-parse --abbrev-ref HEAD').toString().trim();
-        var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`).toString().replace(/refs\/heads\//g, '').trim().split(os.EOL);
+        var branches = git.localBranches();
+        var index = branches.findIndex(function(br) {return br === currentBranch});
+        branches.splice(index, 1);
+        branches.unshift(currentBranch);
         inquirer.prompt([{
-            type: 'list',
+            type: 'autocomplete',
             name: 'branch',
             message: 'Which branch to set description: ',
-            choices: branches,
-            default: branches.indexOf(currentBranch)
+            source: function(ans, input) {
+                return new Promise(function(resolve, reject) {
+                    resolve(branches.filter(function(br) {return !input || br.includes(input);}))
+                });
+            }
         }, {
             type: 'input',
             name: 'description',
