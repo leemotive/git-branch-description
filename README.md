@@ -26,5 +26,6 @@ $ npm install git-branch-description --save-dev
     prune                    remove branch description in properties file but the branch has been deleted
     conflict                 resolve conflicts in properites file after branch merge
     edit                     edit branch description
+    find <regex>             find branch which name or descrition matches regex
 
 
