@@ -21,8 +21,9 @@ exports.remoteBranches = function(replaceRemoteName) {
     branches = trimSingleQuote(branches);
 
     replaceRemoteName && (branches = branches.replace(/(^|\n)\w+\//g, '$1'));
-    branches = branches.split(/\s+/);
-
+    branches = branches.split(/\s+/).filter(function(br) {
+        return replaceRemoteName ? br !== 'HEAD' : !/^\w+\/HEAD$/.test(br);
+    });
     return branches;
 }
 
