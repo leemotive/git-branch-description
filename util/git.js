@@ -1,23 +1,27 @@
-var os = require('os');
 var exec = require('child_process').execSync;
 var parser = require('./parser');
 
+function trimSingleQuote(br) {
+    return ` ${br} `.replace(/(\s)'/g, '$1').replace(/'(\s)/g, '$1').trim();
+}
+
 exports.localBranches = function() {
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/heads/`, {
+    var branches = exec(`git for-each-ref --format='%(refname:short)' refs/heads/`, {
         cwd: parser.getRootDir()
-    }).toString().trim();
+    }).toString();
+    branches = trimSingleQuote(branches);
     
-    branches = branches.replace(/(^|\n)refs\/heads\//g, '$1').split(os.EOL);
+    branches = branches.split(/\s+/);
 
     return branches;
 }
 
 exports.remoteBranches = function(replaceRemoteName) {
-    var branches = exec(`git for-each-ref --format='%(refname)' refs/remotes/`).toString().trim();
-    
-    branches = branches.replace(/(^|\n)refs\/remotes\//g, '$1');
+    var branches = exec(`git for-each-ref --format='%(refname:short)' refs/remotes/`).toString().trim();
+    branches = trimSingleQuote(branches);
+
     replaceRemoteName && (branches = branches.replace(/(^|\n)\w+\//g, '$1'));
-    branches = branches.split(os.EOL);
+    branches = branches.split(/\s+/);
 
     return branches;
 }
