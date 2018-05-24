@@ -13,6 +13,7 @@ var view = require('../command/view');
 var prune = require('../command/prune');
 var conflict = require('../command/conflict');
 var edit = require('../command/edit');
+var find = require('../command/find');
 
 var check = require('../util/check');
 var git = require('../util/git');
@@ -20,7 +21,8 @@ var git = require('../util/git');
 program.version(pkg.version);
 
 
-check.gitDir();
+check.invariantGitDir(check.isGitDir());
+
 program.command('init')
     .description('initialize a git repository with a branch-description.properties')
     .action(function(cmd) {
@@ -80,6 +82,13 @@ program.command('edit')
         }]).then(function(answers) {
            edit(answers);
         })
-    })
+    });
+
+program.command('find <regex>')
+    .description('find branch which name or descrition matches regex')
+    .action(function(regex) {
+        find(regex);
+    });
+
 
 program.parse(process.argv);

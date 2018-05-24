@@ -1,40 +1,6 @@
-var os = require('os');
-
 var parser = require('../util/parser');
 var git = require('../util/git');
-
-var currentBranch = git.currentHead();
-
-function renderPrefix(isCurrent) {
-    return isCurrent ? '*' : ' ';
-}
-function colorName(name, isCurrent) {
-    if (isCurrent) {
-        return `\x1B[32m${name}\x1B[39m`;
-    } else {
-        return name;
-    }
-}
-function colorDesc(desc) {
-    if (desc) {
-        return ` \x1B[36m${desc}\x1B[39m`;
-    } else {
-        return '';
-    }
-}
-
-function isCurrentBranch(name) {
-    return name === currentBranch;
-}
-
-function outputDescription(descs) {
-    let out = descs.map(({name, desc}) => {
-        var isCurrent = isCurrentBranch(name);
-        return `${renderPrefix(isCurrent)} ${colorName(name, isCurrent)} ${colorDesc(desc)}`;
-    });
-    console.log(out.join(os.EOL).toString());
-}
-
+var output = require('../util/out');
 
 
 module.exports = function(specifyBranch, mode, clean) {
@@ -47,7 +13,7 @@ module.exports = function(specifyBranch, mode, clean) {
             name: specifyBranch,
             desc
         };
-        return outputDescription([sbr]);
+        return output.outputDescription([sbr]);
     }
 
     let branches = []
@@ -69,5 +35,5 @@ module.exports = function(specifyBranch, mode, clean) {
         }
     }
 
-    outputDescription(out);
+    output.outputDescription(out);
 }

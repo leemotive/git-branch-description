@@ -1,8 +1,8 @@
 var check = require('../util/check');
 
-if (check.gitDir(true)) {
+if (check.isGitDir()) {
     try {
-    require('./init')();
+        require('./init')();
     } catch (e) {
         
     }
