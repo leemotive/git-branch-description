@@ -47,5 +47,15 @@ exports.branchDescription = function(name) {
         }).toString().trim();
     } catch (e) {
     }
+    try {
+        if (!desc) {
+            const diff = exec(`git fetch --all && git diff ${name} branch-description.properties`).toString();
+            const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
+            if (matches) {
+                desc = matches[1].trim();
+            }
+        }
+    } catch (e) {
+    }
     return desc;
 }
