@@ -20,12 +20,14 @@ var git = require('../util/git');
 
 program.version(pkg.version);
 
-
-check.invariantGitDir(check.isGitDir());
+function checkGitDir() {
+    check.invariantGitDir(check.isGitDir());
+}
 
 program.command('init')
     .description('initialize a git repository with a branch-description.properties')
     .action(function(cmd) {
+        checkGitDir();
         init();
     });
 
@@ -35,6 +37,7 @@ program.command('view [branch]')
     .option('-a --all', 'list both remote-tracking and local branches description')
     .option('-c --clean', 'hide branches without description')
     .action(function(branch, cmd) {
+        checkGitDir();
         let mode = cmd.all ? 'all' : cmd.remote ? 'remote' : 'local';
         let clean = cmd.clean;
         view(branch, mode, clean);
@@ -43,18 +46,21 @@ program.command('view [branch]')
 program.command('prune')
     .description('remove branch description in properties file but the branch has been deleted')
     .action(function() {
+        checkGitDir();
         prune();
     });
 
 program.command('conflict')
     .description('resolve conflicts in properites file after branch merge')
     .action(function() {
+        checkGitDir();
         conflict();
     });
 
 program.command('edit')
     .description('edit branch description')
     .action(function() {
+        checkGitDir();
         var currentBranch = exec('git rev-parse --abbrev-ref HEAD').toString().trim();
         var branches = git.localBranches();
         var index = branches.findIndex(function(br) {return br === currentBranch});
@@ -87,6 +93,7 @@ program.command('edit')
 program.command('find <regex>')
     .description('find branch which name or descrition matches regex')
     .action(function(regex) {
+        checkGitDir();
         find(regex);
     });
 
