@@ -49,7 +49,9 @@ exports.branchDescription = function(name) {
     }
     if (!desc) {
         try {
-            const diff = exec(`git fetch -q origin ${name} && git diff origin/${name} -- branch-description.properties`).toString();
+            const diff = exec(`git fetch -q origin ${name} && git diff origin/${name} -- branch-description.properties`, {
+                cwd: parser.getRootDir()
+            }).toString();
             const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
             if (matches) {
                 desc = matches[1].trim();
@@ -59,7 +61,9 @@ exports.branchDescription = function(name) {
     }
     if (!desc) {
         try {
-            const diff = exec(`git diff ${name} -- branch-description.properties`).toString();
+            const diff = exec(`git diff ${name} -- branch-description.properties`, {
+                cwd: parser.getRootDir()
+            }).toString();
             const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
             if (matches) {
                 desc = matches[1].trim();
