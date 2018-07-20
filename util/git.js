@@ -43,14 +43,16 @@ exports.branchDescription = function(name) {
     let desc = '';
     try {
         desc = exec(`git config branch.${name}.description`, {
-            cwd: parser.getRootDir()
+            cwd: parser.getRootDir(),
+            stdio: 'pipe'
         }).toString().trim();
     } catch (e) {
     }
     if (!desc) {
         try {
             const diff = exec(`git fetch -q origin ${name} && git diff origin/${name} -- branch-description.properties`, {
-                cwd: parser.getRootDir()
+                cwd: parser.getRootDir(),
+                stdio: 'pipe'
             }).toString();
             const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
             if (matches) {
@@ -62,7 +64,8 @@ exports.branchDescription = function(name) {
     if (!desc) {
         try {
             const diff = exec(`git diff ${name} -- branch-description.properties`, {
-                cwd: parser.getRootDir()
+                cwd: parser.getRootDir(),
+                stdio: 'pipe'
             }).toString();
             const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
             if (matches) {
