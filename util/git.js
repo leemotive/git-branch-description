@@ -7,7 +7,8 @@ function trimSingleQuote(br) {
 
 exports.localBranches = function() {
     var branches = exec(`git for-each-ref --format='%(refname:short)' refs/heads/`, {
-        cwd: parser.getRootDir()
+        cwd: parser.getRootDir(),
+        stdio: 'pipe'
     }).toString();
     branches = trimSingleQuote(branches);
     
@@ -17,7 +18,7 @@ exports.localBranches = function() {
 }
 
 exports.remoteBranches = function(replaceRemoteName) {
-    var branches = exec(`git for-each-ref --format='%(refname:short)' refs/remotes/`).toString().trim();
+    var branches = exec(`git fetch -q -n origin && git for-each-ref --format='%(refname:short)' refs/remotes/`).toString().trim();
     branches = trimSingleQuote(branches);
 
     replaceRemoteName && (branches = branches.replace(/(^|\n)\w+\//g, '$1'));
@@ -50,7 +51,7 @@ exports.branchDescription = function(name) {
     }
     if (!desc) {
         try {
-            const diff = exec(`git fetch -q origin ${name} && git diff origin/${name} -- branch-description.properties`, {
+            const diff = exec(`git diff ${name} -- branch-description.properties`, {
                 cwd: parser.getRootDir(),
                 stdio: 'pipe'
             }).toString();
@@ -63,7 +64,7 @@ exports.branchDescription = function(name) {
     }
     if (!desc) {
         try {
-            const diff = exec(`git diff ${name} -- branch-description.properties`, {
+            const diff = exec(`git diff origin/${name} -- branch-description.properties`, {
                 cwd: parser.getRootDir(),
                 stdio: 'pipe'
             }).toString();
@@ -74,5 +75,19 @@ exports.branchDescription = function(name) {
         } catch (e) {
         }
     }
+    if (!desc) {
+        try {
+            const diff = exec(`git fetch -q origin ${name} && git diff origin/${name} -- branch-description.properties`, {
+                cwd: parser.getRootDir(),
+                stdio: 'pipe'
+            }).toString();
+            const matches = diff.match(new RegExp(`-${name}\\s*=\\s*(.+)`));
+            if (matches) {
+                desc = matches[1].trim();
+            }
+        } catch (e) {
+        }
+    }
+    
     return desc;
 }
