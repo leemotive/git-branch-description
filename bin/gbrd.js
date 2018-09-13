@@ -36,8 +36,12 @@ program.command('view [branch]')
     .option('-r --remote', 'list remote remote-tracking branches description')
     .option('-a --all', 'list both remote-tracking and local branches description')
     .option('-c --clean', 'hide branches without description')
+    .option('-f --fetch', 'fetch origin before collection branch description')
     .action(function(branch, cmd) {
         checkGitDir();
+        if (cmd.fetch) {
+            git.fetch();
+        }
         let mode = cmd.all ? 'all' : cmd.remote ? 'remote' : 'local';
         let clean = cmd.clean;
         view(branch, mode, clean);
